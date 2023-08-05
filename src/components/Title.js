@@ -1,32 +1,33 @@
-import React, { useState, useReducer } from 'react';
+import React from 'react';
 
-import titleReducer, { initialState } from '../reducers/titleReducer';
-import { toggleEditing, updateTitle} from './../actions/titleActions';
+
+import {connect } from 'react-redux';
 
 import TitleDisplay from './TitleDisplay';
 import TitleForm from './TitleForm';
 
-const Title = () => {
-  const [state, dispatch] = useReducer(titleReducer, initialState);
-
-  const handleToggleEditing = () => {
-    dispatch(toggleEditing());
-  }
-
-  const handleTitleUpdate = (title) => {
-    dispatch(updateTitle(title));
-  }
+const Title = (props) => {
 
   return (
     <div>
-      <h1>{state.appName}</h1>
       {
-        !state.editing ? 
-          <TitleDisplay title={state.title} handleToggleEditing={handleToggleEditing}/>: 
-          <TitleForm handleTitleUpdate={handleTitleUpdate}/>
-      }
+        !props.editing ? 
+          <TitleDisplay />: 
+          <TitleForm />
+      } 
     </div>
   );
 };
+const mapStateToProps=state=>{
+  return {
+    editing:state.title.editing
 
-export default Title;
+  }
+  //equals to 
+  // state= {
+  //      title: "Dragon Member List 🐲",
+  //      editing: false
+  // };
+}
+
+export default connect(mapStateToProps,{})(Title);
